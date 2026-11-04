@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # Servidor web con PHP
+  php:
+    image: php:8.2-apache
+    container_name: uni_php
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - postgres
+
+  # Base de datos PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: uni_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: uniandes
+      POSTGRES_DB: deber_1
+    ports:
+      - "3254:5432"   # <-- CORREGIDO: Mapea el puerto 3254 de tu PC al puerto interno 5432 de Postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
